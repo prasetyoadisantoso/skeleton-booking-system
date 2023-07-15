@@ -37,10 +37,14 @@ use Illuminate\Support\Facades\Storage;
 /**
  * Development - Production Mode
  */
+Route::inertia('inertia', "index");
+
 Route::group([
     'prefix' => LaravelLocalization::setlocale(),
     'middleware' => ['localeSessionRedirect', 'localizationRedirect'],
 ], function () {
+
+
 
     // Home Page
     Route::get('/', [HomeController::class, 'index'])->name('site.index');
@@ -53,7 +57,7 @@ Route::group([
     Route::get('blog/post/{slug}', [BlogController::class, 'post'])->name('site.blog.post');
 
     // Contact Page
-    Route::get('contact', [ContactController::class,'index'])->name('site.contact');
+    Route::get('contact', [ContactController::class, 'index'])->name('site.contact');
     Route::post('contact/message', [ContactController::class, 'message'])->name('site.contact.message');
 
     // Authentication
@@ -132,7 +136,6 @@ Route::group([
         Route::get('maintenance/optimize/clear', [MaintenanceController::class, 'optimize_clear'])->name('maintenance.optimize.clear');
         // Route::get('maintenance/factory_reset', [MaintenanceController::class, 'factory_reset'])->name('maintenance.factory.reset');
     });
-
 });
 
 /**
@@ -150,10 +153,9 @@ Route::group([
     Route::get('/send-verification', function () {
         return new App\Mail\SendVerification("1111");
     });
-
 });
 
-Route::get('factory-reset', function(){
+Route::get('factory-reset', function () {
     Artisan::call('factory-reset');
     return response()->json([
         'success' => 'success'
@@ -185,5 +187,4 @@ Route::group([
     Route::get('config-cache', function () {
         Artisan::call('config:cache');
     });
-
 });
